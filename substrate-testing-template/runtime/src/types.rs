@@ -19,7 +19,7 @@ pub type Index = u32;
 /// A hash of some data used by the chain.
 pub type Hash = sp_core::H256;
 
-type NegativeImbalance = <Balances as Currency<AccountId>>::NegativeImbalance;
+pub type NegativeImbalance = <Balances as Currency<AccountId>>::NegativeImbalance;
 
 /// The address format for describing accounts.
 pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
@@ -36,7 +36,8 @@ pub type SignedExtra = (
 	frame_system::CheckEra<Runtime>,
 	frame_system::CheckNonce<Runtime>,
 	frame_system::CheckWeight<Runtime>,
-	pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+	// pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+	pallet_asset_tx_payment::ChargeAssetTxPayment::<Runtime>, 
 );
 
 /// Unchecked extrinsic type as expected by this runtime.
@@ -50,5 +51,5 @@ pub type Executive = frame_executive::Executive<
 	frame_system::ChainContext<Runtime>,
 	Runtime,
 	AllPalletsWithSystem,
-	pallet_vtbdex::migration::MigrateToV2<Runtime>,
+	// pallet_test::migration::MigrateToV2<Runtime>,
 >;

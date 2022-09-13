@@ -155,5 +155,6 @@ fn testnet_genesis(
 		transaction_payment: Default::default(),
 		assets: Default::default(),
 		vesting: Default::default(),
+		// society: Default::default(),
 	}
 }

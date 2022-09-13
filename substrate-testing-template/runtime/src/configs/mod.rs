@@ -43,3 +43,10 @@ pub use authorship::*;
 
 pub mod vesting;
 pub use vesting::*;
+
+// pub mod society;
+// pub use society::*;
+
+pub mod pallet_user_config;
+pub use pallet_user_config::*;
+

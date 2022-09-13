@@ -6,6 +6,11 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+
+#[cfg(feature = "runtime-benchmarks")]
+#[macro_use]
+extern crate frame_benchmarking;
+
 use pallet_grandpa::{
 	fg_primitives, AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList,
 };
@@ -25,12 +30,12 @@ use sp_version::RuntimeVersion;
 
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
-	construct_runtime, parameter_types,
+	construct_runtime, parameter_types, ord_parameter_types,
 	// traits::{
 	// 	ConstU128, ConstU32, ConstU64, ConstU8, KeyOwnerProofSystem, Randomness, StorageInfo,
 	// },
 	traits::{
-		ConstU128, ConstU64, ConstU16, ConstU32, ConstU8,  Randomness, StorageInfo, Currency, EnsureOneOf, EqualPrivilegeOnly, Everything,
+		ConstU128, ConstU64, ConstU16, ConstU32, ConstU8, Randomness, StorageInfo, Currency, EnsureOneOf, EqualPrivilegeOnly, Everything,
 		Imbalance, InstanceFilter, KeyOwnerProofSystem, LockIdentifier, Nothing, OnUnbalanced,
 		U128CurrencyToVote,
 	},
@@ -160,6 +165,8 @@ construct_runtime!(
 			// Authorship must be before session in order to note author in the correct session and era
 		// for im-online and staking.
 		Authorship: pallet_authorship,
+		// Society: pallet_society,
+		User: pallet_user,
 	}
 );
 

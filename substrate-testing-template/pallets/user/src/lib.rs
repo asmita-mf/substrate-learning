@@ -18,8 +18,13 @@ mod tests;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
 
+pub mod weights;
+pub use weights::WeightInfo;
+
 #[frame_support::pallet]
 pub mod pallet {
+	use super::*;
+
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 	use scale_info::prelude::vec::Vec;
@@ -29,6 +34,8 @@ pub mod pallet {
 	pub trait Config: frame_system::Config {
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+		/// Type for benchmarked weight
+		type WeightInfo: WeightInfo;
 	}
 
 	#[pallet::pallet]
@@ -129,7 +136,8 @@ pub mod pallet {
 	impl<T: Config> Pallet<T> {
 		/// An example dispatchable that takes a singles value as a parameter, writes the value to
 		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		// #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::register_user())]
 		pub fn register_user(origin: OriginFor<T>, name: Vec<u8>) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 
@@ -146,7 +154,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::signin())]
 		pub fn signin(origin: OriginFor<T>) -> DispatchResult {
 
 			let signer = ensure_signed(origin)?;
@@ -165,7 +173,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::signout())]
 		pub fn signout(origin: OriginFor<T>) -> DispatchResult {
 
 			let signer = ensure_signed(origin)?;
@@ -185,7 +193,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::update_user())]
 		pub fn update_user(
 			origin: OriginFor<T>, 
 			email_id: Option<Vec<u8>>, 
@@ -213,7 +221,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::delete_user())]
 		pub fn delete_user(origin: OriginFor<T>) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 			ensure!(<User<T>>::contains_key(&signer), Error::<T>::AddressNotRegistered);
@@ -229,7 +237,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::add_friend())]
 		pub fn add_friend(origin: OriginFor<T>, friend_id: T::AccountId) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 			ensure!(<User<T>>::contains_key(&signer), Error::<T>::AddressNotRegistered);
@@ -250,7 +258,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+		#[pallet::weight(T::WeightInfo::delete_friend())]
 		pub fn delete_friend(origin: OriginFor<T>, friend_id: T::AccountId) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 			ensure!(<User<T>>::contains_key(&signer), Error::<T>::AddressNotRegistered);

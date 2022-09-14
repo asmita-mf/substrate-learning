@@ -74,3 +74,8 @@ benchmarks! {
 
 	impl_benchmark_test_suite!(Template, crate::mock::new_test_ext(), crate::mock::Test);
 }
+
+
+
+// Compile cli code: cargo build --release --features runtime-benchmarks
+//   ./target/release/node-template benchmark pallet --pallet pallet_user --extrinsic "*" --steps=50 --repeat=20 --execution=wasm --wasm-execution=compiled --heap-pages=4096 --output=pallets/user/src/weights1.rs 

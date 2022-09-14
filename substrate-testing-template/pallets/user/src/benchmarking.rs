@@ -31,7 +31,6 @@ benchmarks! {
 		let name = "alice".as_bytes().to_vec();
 	}: _(RawOrigin::Signed(caller), name)
 	
-
 	signin {
 		let caller: T::AccountId = whitelisted_caller();
 		create_default_user::<T>(caller.clone(), "alice1".as_bytes().to_vec());

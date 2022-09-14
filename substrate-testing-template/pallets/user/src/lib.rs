@@ -137,6 +137,7 @@ pub mod pallet {
 		/// An example dispatchable that takes a singles value as a parameter, writes the value to
 		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
 		// #[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
+
 		#[pallet::weight(T::WeightInfo::register_user())]
 		pub fn register_user(origin: OriginFor<T>, name: Vec<u8>) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
@@ -253,7 +254,6 @@ pub mod pallet {
 				from: signer,
 				friend: friend_id,
 			});
-
 
 			Ok(())
 		}
